@@ -5,28 +5,41 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 const { log } = labeledLogger();
 
 /**
+ * Checks if a user works at a specific company.
  *
+ * @param {number} id - The ID of the user to check.
+ * @param {string} companyName - The name of the company to compare with.
+ * @returns {Promise<boolean>} A Promise that resolves to a boolean indicating
+ *   whether the user works at the specified company. If an error occurs or
+ *   the user doesn't work at the company, the Promise resolves to false.
  * @async
  */
-const userWorksAt = async () => {};
+const userWorksAt = async (id, companyName) => {
+  try {
+    const user = await fetchUserById(id);
+    return user.company.name === companyName ? true : false;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 describe('userWorksAt checks if a user works at a specific company', () => {
-    it('user 4 does work at Robel-Corkery', async () => {
-        const actual = await userWorksAt(4, 'Robel-Corkery');
-        expect(actual).toEqual(true);
-    });
-    it('user 4 does not work at Romaguera-Jacobson', async () => {
-        const actual = await userWorksAt(4, 'Romaguera-Jacobson');
-        expect(actual).toEqual(false);
-    });
-    it('user 6 does work at Considine-Lockman', async () => {
-        const actual = await userWorksAt(6, 'Considine-Lockman');
-        expect(actual).toEqual(true);
-    });
-    it('user 7 does not work at John Groups', async () => {
-        const actual = await userWorksAt(7, 'John Groups');
-        expect(actual).toEqual(false);
-    });
+  it('user 4 does work at Robel-Corkery', async () => {
+    const actual = await userWorksAt(4, 'Robel-Corkery');
+    expect(actual).toEqual(true);
+  });
+  it('user 4 does not work at Romaguera-Jacobson', async () => {
+    const actual = await userWorksAt(4, 'Romaguera-Jacobson');
+    expect(actual).toEqual(false);
+  });
+  it('user 6 does work at Considine-Lockman', async () => {
+    const actual = await userWorksAt(6, 'Considine-Lockman');
+    expect(actual).toEqual(true);
+  });
+  it('user 7 does not work at John Groups', async () => {
+    const actual = await userWorksAt(7, 'John Groups');
+    expect(actual).toEqual(false);
+  });
 });
 
 log('= = = =  the call stack is empty  = = = =');

@@ -7,35 +7,44 @@ const { log } = labeledLogger();
 // --- declare function ---
 
 /**
+ * Retrieves a user's username and email by their ID.
  *
+ * @param {number} id - The ID of the user to fetch information for.
+ * @returns {Promise<string>} A Promise that resolves to a string containing
+ *   the formatted user information in the format "ID. Username, Email".
+ *   If an error occurs, an empty string is returned.
  */
-const usernameAndEmail = () => {};
+const usernameAndEmail = (id) => {
+  return fetchUserById(id)
+    .then((user) => {
+      return `${user.id}. ${user.username}, ${user.email}`;
+    })
+    .catch((err) => console.error(err));
+};
 
 // --- test function ---
 
 describe("usernameAndEmail: returns a user's name", () => {
-    it("gets user 2's name", () => {
-        return usernameAndEmail(2).then((actual) => {
-            expect(actual).toEqual('2. Antonette, Shanna@melissa.tv'); // email has been corrected
-        });
+  it("gets user 2's name", () => {
+    return usernameAndEmail(2).then((actual) => {
+      expect(actual).toEqual('2. Antonette, Shanna@melissa.tv'); // email has been corrected
     });
-    it("gets user 3's name", () => {
-        return usernameAndEmail(4).then((actual) => {
-            expect(actual).toEqual('4. Karianne, Julianne.OConner@kory.org'); // email has been corrected
-        });
+  });
+  it("gets user 3's name", () => {
+    return usernameAndEmail(4).then((actual) => {
+      expect(actual).toEqual('4. Karianne, Julianne.OConner@kory.org'); // email has been corrected
     });
-    it("gets user 4's name", () => {
-        return usernameAndEmail(7).then((actual) => {
-            expect(actual).toEqual('7. Elwyn.Skiles, Telly.Hoeger@billy.biz');
-        });
+  });
+  it("gets user 4's name", () => {
+    return usernameAndEmail(7).then((actual) => {
+      expect(actual).toEqual('7. Elwyn.Skiles, Telly.Hoeger@billy.biz');
     });
-    it("gets user 8's name", () => {
-        return usernameAndEmail(10).then((actual) => {
-            expect(actual).toEqual(
-                '10. Moriah.Stanton, Rey.Padberg@karina.biz',
-            ); // email has been corrected
-        });
+  });
+  it("gets user 8's name", () => {
+    return usernameAndEmail(10).then((actual) => {
+      expect(actual).toEqual('10. Moriah.Stanton, Rey.Padberg@karina.biz'); // email has been corrected
     });
+  });
 });
 
 log('= = = =  the call stack is empty  = = = =');
